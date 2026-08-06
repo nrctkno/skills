@@ -8,6 +8,9 @@ Review the given GitHub pull request and report findings in chat. Never post com
 
 ## Steps
 
+0. **Ask for the PR link.**
+   - Never assume any PR number or repo — always ask for the link to the PR to review.
+
 1. **Load the PR.**
    - `gh pr view <number> --json title,body,baseRefName,headRefName,files,comments,reviews` for context and existing discussion comments.
    - `gh api repos/{owner}/{repo}/pulls/{number}/comments` for inline review comments (each tied to a specific file/line).
