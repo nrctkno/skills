@@ -10,10 +10,11 @@ Review the given GitHub pull request and report findings in chat. Never post com
 
 0. **Ask for the PR link.**
    - Never assume any PR number or repo — always ask for the link to the PR to review.
+   - Ask as a plain open-ended question, not a multiple-choice prompt — there's no natural fixed set of options for a URL.
 
 1. **Load the PR.**
    - `gh pr view <number> --json title,body,baseRefName,headRefName,files,comments,reviews` for context and existing discussion comments.
-   - `gh api repos/{owner}/{repo}/pulls/{number}/comments` for inline review comments (each tied to a specific file/line).
+   - `gh api repos/{owner}/{repo}/pulls/{number}/comments` for inline review comments (each tied to a specific file/line) — this is often where all the real discussion lives, since the `comments` field above only holds issue-style top-level comments and is frequently empty even on a heavily-discussed PR.
    - `gh pr diff <number>` for the actual diff. Read full changed files (not just the diff hunks) when the surrounding code is needed to judge correctness.
 
 2. **Review across exactly three lenses.** Skip a lens entirely if the diff has nothing relevant to it (e.g. a docs-only PR has nothing for "security").
@@ -28,7 +29,7 @@ Review the given GitHub pull request and report findings in chat. Never post com
 
 4. **Verify before reporting.** Don't flag something from a partial read of a diff hunk alone — check the surrounding file when in doubt. A plausible-looking bug that turns out to be already handled elsewhere is not a finding.
 
-5. **Evaluate existing discussion comments independently.** For every comment already on the PR (issue-style and inline review comments), judge — from the diff itself, not from the comment's tone or confidence — whether it points to a real problem in the current code. A comment can be `valid` (the concern holds up against the actual diff), `not valid` (the concern doesn't hold — already handled, based on a misreading, or resolved by a later commit), or `unclear` (can't be confirmed without more context, e.g. a design opinion with no objectively right answer).
+5. **Evaluate existing discussion comments independently.** For every comment already on the PR (issue-style and inline review comments), judge — from the diff itself, not from the comment's tone or confidence — whether it points to a real problem in the current code. A comment can be `valid` (the concern holds up against the actual diff), `not valid` (the concern doesn't hold — already handled, based on a misreading, or resolved by a later commit), or `unclear` (can't be confirmed without more context, e.g. a design opinion with no objectively right answer). If a comment concerns the same underlying issue as one of your own findings, state the supporting evidence once and reference it from the other section rather than duplicating the explanation.
 
 ## Output format
 
